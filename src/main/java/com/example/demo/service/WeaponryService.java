@@ -6,5 +6,5 @@ import com.example.demo.entity.Weaponry;
 public interface WeaponryService {
     WeaponryDTO createWeaponry(WeaponryDTO weaponryDTO);
 
-    WeaponryDTO addRelationship(String weaponryName, String baseType, String baseName);
+    String addRelationship(String weaponryName, String baseType, String baseName, int numCount);
 }

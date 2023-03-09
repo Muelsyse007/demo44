@@ -2,10 +2,14 @@ package com.example.demo.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.data.util.Pair;
+
+import java.util.ArrayList;
+
 @Data
 @Accessors(chain = true)
 public class AirportDTO {
-    private String id;
+    private long id;
     private String name;
     private Float area;
     private String airfieldClass;

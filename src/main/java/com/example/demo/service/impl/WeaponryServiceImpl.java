@@ -5,6 +5,7 @@ import com.example.demo.entity.Airport;
 import com.example.demo.entity.MilitaryBase;
 import com.example.demo.entity.Port;
 import com.example.demo.entity.Weaponry;
+import com.example.demo.relationship.DeployedIn;
 import com.example.demo.repository.AirportRepository;
 import com.example.demo.repository.MilitaryBaseRepository;
 import com.example.demo.repository.PortRepository;
@@ -15,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +33,7 @@ public class WeaponryServiceImpl implements WeaponryService {
         WeaponryDTO weaponryDTO = new WeaponryDTO();
         weaponryDTO.setDescription(weaponry.getDescription())
                 .setName(weaponry.getName())
-                .setUnion(weaponry.getUnion())
-                .setId(weaponry.getIdentity());
+                .setUnion(weaponry.getUnion());
         return weaponryDTO;
     }
 
@@ -39,49 +41,62 @@ public class WeaponryServiceImpl implements WeaponryService {
     public WeaponryDTO createWeaponry(WeaponryDTO weaponryDTO) {
         Weaponry newWeaponry = new Weaponry();
         newWeaponry.initWeaponry(weaponryDTO);
+        newWeaponry.setIdentity(weaponryDTO.getId());
+        newWeaponry.setId(weaponryDTO.getId());
         weaponryRepository.save(newWeaponry);
         return weaponryDTO;
     }
 
     @Override
-    public WeaponryDTO addRelationship(String weaponryName, String baseType, String baseName) {
+    public String addRelationship(String weaponryName, String baseType, String baseName, int numCount) {
         Weaponry weaponry = weaponryRepository.findWeaponryByName(weaponryName);
-        HashSet<Weaponry> set = new HashSet<>();
+        DeployedIn deployedIn = new DeployedIn();
+        deployedIn.initDeployedIn(weaponry, numCount);
+        ArrayList<DeployedIn> list = new ArrayList<>();
+        logger.info("1");
         switch (baseType) {
             case "Airport" -> {
+                List<Airport> allByName = airportRepository.findAllByName(baseName);
                 Airport airport = airportRepository.findAirportByName(baseName);
-                set = airport.getWeaponries();
-                if (set.contains(weaponry)) {
+                list = airport.getWeaponrySet();
+                if (list.contains(deployedIn)) {
                     logger.info("no");
                     break;
                 }
-                set.add(weaponry);
-                airport.setWeaponries(set);
-                airportRepository.save(airport);
+                logger.info("2");
+                list.add(deployedIn);
+                airport.setWeaponrySet(list);
+                airport.getWeaponrySet().add(deployedIn);
+                try {
+                    airportRepository.save(airport);
+                } catch (Exception e) {
+                    logger.info("error");
+                }
+                logger.info("3");
             }
             case "Port" -> {
                 Port port = portRepository.findPortByName(baseName);
-                set = port.getWeaponries();
-                if (set.contains(weaponry)) {
+                list = port.getWeaponrySet();
+                if (list.contains(deployedIn)) {
                     logger.info("no");
                     break;
                 }
-                set.add(weaponry);
-                port.setWeaponries(set);
+                list.add(deployedIn);
+                port.setWeaponrySet(list);
                 portRepository.save(port);
             }
             case "MilitaryBase" -> {
                 MilitaryBase militaryBase = militaryBaseRepository.findMilitaryBaseByName(baseName);
-                set = militaryBase.getWeaponries();
-                if (set.contains(weaponry)) {
+                list = militaryBase.getWeaponrySet();
+                if (list.contains(deployedIn)) {
                     logger.info("no");
                     break;
                 }
-                set.add(weaponry);
-                militaryBase.setWeaponries(set);
+                list.add(deployedIn);
+                militaryBase.setWeaponrySet(list);
                 militaryBaseRepository.save(militaryBase);
             }
         }
-        return cast(weaponry);
+        return "OK";
     }
 }

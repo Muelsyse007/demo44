@@ -2,13 +2,17 @@ package com.example.demo.service.impl;
 
 import com.example.demo.dto.AirportDTO;
 import com.example.demo.entity.Airport;
+import com.example.demo.entity.Weaponry;
+import com.example.demo.relationship.DeployedIn;
 import com.example.demo.repository.AirportRepository;
+import com.example.demo.repository.WeaponryRepository;
 import com.example.demo.service.AirportService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +21,11 @@ import java.util.stream.Collectors;
 public class AirportServiceImpl implements AirportService {
     final private Logger logger = LoggerFactory.getLogger(AirportServiceImpl.class);
     private final AirportRepository airportRepository;
+    private final WeaponryRepository weaponryRepository;
 
     private AirportDTO cast(Airport airport) {
         AirportDTO airportDTO = new AirportDTO();
-        airportDTO.setId(airport.getIdentity())
+        airportDTO
                 .setAirportType(airport.getAirportType())
                 .setAddress(airport.getAddress())
                 .setICAO(airport.getICAO())
@@ -56,6 +61,8 @@ public class AirportServiceImpl implements AirportService {
     public AirportDTO createAirport(AirportDTO airportDTO) {
         Airport newAirport = new Airport();
         newAirport.initAirport(airportDTO);
+        newAirport.setIdentity(airportDTO.getId());
+        newAirport.setId(airportDTO.getId());
         airportRepository.save(newAirport);
         return airportDTO;
     }

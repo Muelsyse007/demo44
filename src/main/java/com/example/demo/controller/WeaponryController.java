@@ -16,8 +16,8 @@ public class WeaponryController {
         return weaponryService.createWeaponry(weaponryDTO);
     }
 
-    @PostMapping("/DEPLOYED_IN/{weaponryName}/{baseType}/{baseName}")
-    public void addRelationship(@PathVariable String weaponryName, @PathVariable String baseType, @PathVariable String baseName) {
-        weaponryService.addRelationship(weaponryName, baseType, baseName);
+    @PostMapping("/DEPLOYED_IN/{weaponryName}/{baseType}/{baseName}/{numCount}")
+    public void addRelationship(@PathVariable String weaponryName, @PathVariable String baseType, @PathVariable String baseName, @PathVariable int numCount) {
+        weaponryService.addRelationship(weaponryName, baseType, baseName, numCount);
     }
 }

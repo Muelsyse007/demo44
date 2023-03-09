@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.MilitaryBaseDTO;
+import com.example.demo.relationship.DeployedIn;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.springframework.data.neo4j.core.schema.Relationship.Direction.INCOMING;
@@ -31,7 +33,7 @@ public class MilitaryBase {
     @Property
     private String address;
     @Relationship(type = "DEPLOYED_IN", direction = INCOMING)
-    private HashSet<Weaponry> weaponries = new HashSet<>();
+    private ArrayList<DeployedIn> weaponrySet = new ArrayList<>();
 
     public MilitaryBase(MilitaryBaseDTO militaryBaseDTO){
         this.identity = militaryBaseDTO.getId();
