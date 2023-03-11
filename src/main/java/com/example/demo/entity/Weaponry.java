@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.WeaponryDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,9 @@ import org.springframework.data.neo4j.core.schema.Property;
 
 @Node("Weaponry")
 @RequiredArgsConstructor
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 public class Weaponry {
     @Id @GeneratedValue
     long identity;

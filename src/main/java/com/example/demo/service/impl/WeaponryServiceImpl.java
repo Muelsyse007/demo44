@@ -48,31 +48,26 @@ public class WeaponryServiceImpl implements WeaponryService {
     }
 
     @Override
-    public String addRelationship(String weaponryName, String baseType, String baseName, int numCount) {
+    public String addRelationship(String weaponryName, String baseType, String baseName, Integer numCount) {
         Weaponry weaponry = weaponryRepository.findWeaponryByName(weaponryName);
-        DeployedIn deployedIn = new DeployedIn();
-        deployedIn.initDeployedIn(weaponry, numCount);
-        ArrayList<DeployedIn> list = new ArrayList<>();
-        logger.info("1");
+        DeployedIn deployedIn = new DeployedIn(weaponry,numCount);
+        deployedIn.getCount();
+        List<DeployedIn> list = new ArrayList<>();
         switch (baseType) {
             case "Airport" -> {
-                List<Airport> allByName = airportRepository.findAllByName(baseName);
                 Airport airport = airportRepository.findAirportByName(baseName);
                 list = airport.getWeaponrySet();
                 if (list.contains(deployedIn)) {
                     logger.info("no");
                     break;
                 }
-                logger.info("2");
                 list.add(deployedIn);
                 airport.setWeaponrySet(list);
-                airport.getWeaponrySet().add(deployedIn);
                 try {
                     airportRepository.save(airport);
                 } catch (Exception e) {
                     logger.info("error");
                 }
-                logger.info("3");
             }
             case "Port" -> {
                 Port port = portRepository.findPortByName(baseName);
@@ -82,7 +77,7 @@ public class WeaponryServiceImpl implements WeaponryService {
                     break;
                 }
                 list.add(deployedIn);
-                port.setWeaponrySet(list);
+//                port.setWeaponrySet(list);
                 portRepository.save(port);
             }
             case "MilitaryBase" -> {
@@ -93,7 +88,7 @@ public class WeaponryServiceImpl implements WeaponryService {
                     break;
                 }
                 list.add(deployedIn);
-                militaryBase.setWeaponrySet(list);
+//                militaryBase.setWeaponrySet(list);
                 militaryBaseRepository.save(militaryBase);
             }
         }

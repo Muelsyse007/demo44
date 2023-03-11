@@ -62,7 +62,7 @@ public class AirportServiceImpl implements AirportService {
         Airport newAirport = new Airport();
         newAirport.initAirport(airportDTO);
         newAirport.setIdentity(airportDTO.getId());
-        newAirport.setId(airportDTO.getId());
+//        newAirport.setId(airportDTO.getId());
         airportRepository.save(newAirport);
         return airportDTO;
     }

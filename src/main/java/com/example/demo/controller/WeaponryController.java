@@ -5,6 +5,8 @@ import com.example.demo.service.WeaponryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/weaponry")
 @RequiredArgsConstructor
@@ -16,8 +18,8 @@ public class WeaponryController {
         return weaponryService.createWeaponry(weaponryDTO);
     }
 
-    @PostMapping("/DEPLOYED_IN/{weaponryName}/{baseType}/{baseName}/{numCount}")
-    public void addRelationship(@PathVariable String weaponryName, @PathVariable String baseType, @PathVariable String baseName, @PathVariable int numCount) {
-        weaponryService.addRelationship(weaponryName, baseType, baseName, numCount);
+    @PostMapping("/DEPLOYED_IN/{weaponryName}/{baseType}/{baseName}/{roles}")
+    public void addRelationship(@PathVariable String weaponryName, @PathVariable String baseType, @PathVariable String baseName, @PathVariable Integer roles) {
+        weaponryService.addRelationship(weaponryName, baseType, baseName, roles);
     }
 }
